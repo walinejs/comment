@@ -1,4 +1,4 @@
-import { render } from "lit-html";
+import { type TemplateResult, render } from "lit-html";
 import { shallowReactive, effect } from "@vue/reactivity";
 
 let currentInstance;
@@ -9,7 +9,7 @@ export * from "lit-html";
 export function defineComponent<T extends Record<string, unknown>>(
   name: string,
   propDefs: (keyof T)[],
-  factory: (props: T) => () => string
+  factory: (props: T) => () => TemplateResult<1>
 ) {
   const Component = class extends HTMLElement {
     _props: T;
