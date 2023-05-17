@@ -9,5 +9,13 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@8.5.1"
+  "packageManager": "pnpm@8.5.1",
+  "dependencies": {
+    "@waline/api": "1.0.0-alpha.0",
+    "@vue/reactivity": "^3.3.2",
+    "lit-html": "^2.7.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.4"
+  }
 }
