@@ -11,8 +11,10 @@
   "license": "ISC",
   "packageManager": "pnpm@8.5.1",
   "dependencies": {
-    "@waline/api": "1.0.0-alpha.0",
+    "@vue/shared": "^3.3.2",
     "@vue/reactivity": "^3.3.2",
+    "@vueuse/core": "^10.1.2",
+    "@waline/api": "1.0.0-alpha.0",
     "lit-html": "^2.7.4"
   },
   "devDependencies": {
