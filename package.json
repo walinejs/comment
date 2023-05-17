@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "test": "npm run test:dev && npm run test:prod",
+    "test:dev": "web-test-runner __tests__/**/*.test.ts --node-resolve --playwright",
+    "test:watch": "web-test-runner --watch",
+    "test:prod": "MODE=prod web-test-runner",
+    "test:prod:watch": "MODE=prod web-test-runner --watch"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +20,13 @@
     "lit": "^2.7.4"
   },
   "devDependencies": {
-    "typescript": "^5.0.4",
-    "vite": "^4.3.7"
+    "@open-wc/testing": "3.1.8",
+    "@web/dev-server-esbuild": "0.4.1",
+    "@web/test-runner": "0.16.1",
+    "@web/test-runner-playwright": "0.10.0",
+    "@web/test-runner-puppeteer": "0.13.1",
+    "ts-lit-plugin": "1.2.1",
+    "typescript": "5.0.4",
+    "vite": "4.3.7"
   }
 }
