@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "vite build",
     "dev": "vite",
     "test": "npm run test:dev && npm run test:prod",
     "test:dev": "web-test-runner __tests__/**/*.test.ts --node-resolve --playwright",
@@ -16,7 +17,7 @@
   "license": "ISC",
   "packageManager": "pnpm@8.5.1",
   "dependencies": {
-    "@waline/api": "1.0.0-alpha.0",
+    "@waline/api": "1.0.0-alpha.1",
     "lit": "^2.7.4"
   },
   "devDependencies": {
@@ -25,6 +26,7 @@
     "@web/test-runner": "0.16.1",
     "@web/test-runner-playwright": "0.10.0",
     "@web/test-runner-puppeteer": "0.13.1",
+    "prettier": "^2.8.8",
     "ts-lit-plugin": "1.2.1",
     "typescript": "5.0.4",
     "vite": "4.3.7"

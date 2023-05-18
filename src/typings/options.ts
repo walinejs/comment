@@ -1,6 +1,6 @@
-import { type WalineProps } from './waline.js';
+import { type WalineProps } from "./waline.js";
 
-export interface WalineInitOptions extends Omit<WalineProps, 'path'> {
+export interface WalineInitOptions extends Omit<WalineProps, "path"> {
   /**
    * Waline 的初始化挂载器。必须是一个**有效的** CSS 选择器 或 HTML 元素
    *

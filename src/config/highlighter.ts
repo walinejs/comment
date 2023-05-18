@@ -30,23 +30,23 @@ const LINE_COMMENT_REGEXP = /(?:^|\s)\/\/(.+?)$/gm;
 const BLOCK_COMMENT_REGEXP = /\/\*([\S\s]*?)\*\//gm;
 const REGEXP = new RegExp(
   `(${WORD_REGEXP.source}|${LEFT_ANGLE_REGEXP.source})|((?:${LINE_COMMENT_REGEXP.source})|(?:${BLOCK_COMMENT_REGEXP.source}))`,
-  'gmi'
+  "gmi"
 );
 
 const COLORS = [
-  '23AC69',
-  '91C132',
-  'F19726',
-  'E8552D',
-  '1AAB8E',
-  'E1147F',
-  '2980C1',
-  '1BA1E6',
-  '9FA0A0',
-  'F19726',
-  'E30B20',
-  'E30B20',
-  'A3338B',
+  "23AC69",
+  "91C132",
+  "F19726",
+  "E8552D",
+  "1AAB8E",
+  "E1147F",
+  "2980C1",
+  "1BA1E6",
+  "9FA0A0",
+  "F19726",
+  "E30B20",
+  "E30B20",
+  "A3338B",
 ];
 const cache: Record<string, string> = {};
 
@@ -55,7 +55,7 @@ export const defaultHighlighter = (input: string): string => {
 
   return input.replace(REGEXP, (_match, word: string, comment: string) => {
     if (comment) return `<span style="color: slategray">${comment}</span>`;
-    if (word === '<') return '&lt;';
+    if (word === "<") return "&lt;";
 
     let color: string;
 
