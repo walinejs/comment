@@ -85,7 +85,7 @@ export class WalineRoot extends LitElement {
    * Waline UI Language
    */
   @property({ type: String })
-  language =
+  override lang =
     navigator.languages.find((lang) =>
       supportedLanguages.includes(lang.toLowerCase())
     ) ?? "";
@@ -145,8 +145,7 @@ export class WalineRoot extends LitElement {
 
   get i18n() {
     return (
-      DEFAULT_LOCALES[this.language.toLowerCase()] ||
-      DEFAULT_LOCALES[DEFAULT_LANG]
+      DEFAULT_LOCALES[this.lang.toLowerCase()] || DEFAULT_LOCALES[DEFAULT_LANG]
     );
   }
 
@@ -227,14 +226,8 @@ export class WalineRoot extends LitElement {
   }
 
   getCommentData(pageNumber: number): void {
-    const {
-      commentSorting,
-      language,
-      serverURL,
-      identify,
-      pageSize,
-      userInfo,
-    } = this;
+    const { commentSorting, lang, serverURL, identify, pageSize, userInfo } =
+      this;
     const controller = new AbortController();
 
     this.status = "loading";
@@ -243,7 +236,7 @@ export class WalineRoot extends LitElement {
 
     getComment({
       serverURL,
-      lang: language,
+      lang,
       path: identify,
       pageSize,
       sortBy: sortKeyMap[commentSorting],
