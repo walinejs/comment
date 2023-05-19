@@ -1,4 +1,4 @@
-import { LitElement, html, css } from "lit";
+import { LitElement, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { DEFAULT_LANG, DEFAULT_LOCALES } from "../config/index.js";
 import { type WalineCommentSorting } from "../typings/index.js";
@@ -163,14 +163,12 @@ export class WalineRoot extends LitElement {
         </div>
         <ul class="wl-sort">
           ${sortingMethods.map(
-            (item) => html`
-              <li
-                class="${item === this.commentSorting ? "active" : ""}"
-                @click="${() => this.onSortByChange(item)}"
-              >
-                ${i18n[item]}
-              </li>
-            `
+            (item) => html`<li
+              class="${item === this.commentSorting ? "active" : ""}"
+              @click="${() => this.onSortByChange(item)}"
+            >
+              ${i18n[item]}
+            </li>`
           )}
         </ul>
       </div>
@@ -191,13 +189,11 @@ export class WalineRoot extends LitElement {
         )}
       </div>
       ${status === "error"
-        ? html`
-            <div class="wl-operation">
-              <button type="button" @click="${this.refresh}">
-                ${i18n.refresh}
-              </button>
-            </div>
-          `
+        ? html`<div class="wl-operation">
+            <button type="button" @click="${this.refresh}">
+              ${i18n.refresh}
+            </button>
+          </div>`
         : status === "loading"
         ? html`<div class="wl-loading">${loadingIcon({ size: 30 })}</div>`
         : !state.data.length
@@ -215,18 +211,11 @@ export class WalineRoot extends LitElement {
         : ""}
       ${this.noCopyright
         ? ""
-        : html`
-            <div class="wl-power">
-              Powered by
-              <a
-                href="https://waline.js.org"
-                target="_blank"
-                rel="noopener noreferrer"
-                >Waline</a
-              >
-              v${VERSION}
-            </div>
-          `}
+        : html`<div class="wl-power">
+            Powered by
+            <a href="https://waline.js.org" target="_blank">Waline</a>
+            v${VERSION}
+          </div>`}
     </div>`;
   }
 
