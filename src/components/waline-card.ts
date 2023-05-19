@@ -6,11 +6,13 @@ import {
 import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
-import { deleteIcon } from "./delete-icon.js";
-import { editIcon } from "./edit-icon.js";
-import { likeIcon } from "./like-icon.js";
-import { replyIcon } from "./reply-icon.js";
-import { verifiedIcon } from "./verified-icon.js";
+import {
+  deleteIcon,
+  editIcon,
+  likeIcon,
+  replyIcon,
+  verifiedIcon,
+} from "./icons/index.js";
 
 import { type WalineRoot } from "./waline-comment.js";
 import { walineContent } from "./waline-content.js";

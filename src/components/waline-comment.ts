@@ -12,7 +12,7 @@ import {
   updateComment,
 } from "@waline/api";
 
-import { loadingIcon } from "./loading-icon.js";
+import { loadingIcon } from "./icons/index.js";
 import { baseStyle } from "../styles/base.js";
 import { normalizeStyle } from "../styles/normalize.js";
 import { getServerURL } from "../utils/config.js";
