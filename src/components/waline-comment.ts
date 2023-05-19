@@ -150,18 +150,16 @@ export class WalineRoot extends LitElement {
   }
 
   override render() {
-    // TODO: remove it
-    console.log("render");
+    const { i18n, status, state } = this;
+
     return html`<div>
       <div id="waline-reaction">
         <!-- TODO: Add reaction component -->
       </div>
       <div class="wl-meta-head">
         <div class="wl-count">
-          ${this.state.count
-            ? html`<span class="wl-num">${this.state.count}</span>`
-            : ""}
-          ${this.i18n.comment}
+          ${state.count ? html`<span class="wl-num">${state.count}</span>` : ""}
+          ${i18n.comment}
         </div>
         <ul class="wl-sort">
           ${sortingMethods.map(
@@ -170,14 +168,14 @@ export class WalineRoot extends LitElement {
                 class="${item === this.commentSorting ? "active" : ""}"
                 @click="${() => this.onSortByChange(item)}"
               >
-                ${this.i18n[item]}
+                ${i18n[item]}
               </li>
             `
           )}
         </ul>
       </div>
       <div class="wl-cards">
-        ${this.state.data.map(
+        ${state.data.map(
           (comment) => html`<waline-card
             .comment="${comment}"
             .root-id="${comment.objectId}"
@@ -192,26 +190,26 @@ export class WalineRoot extends LitElement {
           />`
         )}
       </div>
-      ${this.status === "error"
+      ${status === "error"
         ? html`
             <div class="wl-operation">
               <button type="button" @click="${this.refresh}">
-                ${this.i18n.refresh}
+                ${i18n.refresh}
               </button>
             </div>
           `
-        : this.status === "loading"
+        : status === "loading"
         ? html`<div class="wl-loading">${loadingIcon({ size: 30 })}</div>`
-        : !this.state.data.length
-        ? html`<div class="wl-empty">${this.i18n.sofa}</div>`
-        : this.state.page < this.state.totalPages
+        : !state.data.length
+        ? html`<div class="wl-empty">${i18n.sofa}</div>`
+        : state.page < state.totalPages
         ? html`<div class="wl-operation">
             <button
               type="button"
               class="wl-btn"
-              @click="${() => this.getCommentData(this.state.page + 1)}"
+              @click="${() => this.getCommentData(state.page + 1)}"
             >
-              ${this.i18n.more}
+              ${i18n.more}
             </button>
           </div>`
         : ""}
