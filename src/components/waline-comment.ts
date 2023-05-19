@@ -154,7 +154,9 @@ export class WalineRoot extends LitElement {
     // TODO: remove it
     console.log("render");
     return html`<div>
-      <div id="waline-reaction"></div>
+      <div id="waline-reaction">
+        <!-- TODO: Add reaction component -->
+      </div>
       <div class="wl-meta-head">
         <div class="wl-count">
           ${this.state.count
@@ -205,7 +207,11 @@ export class WalineRoot extends LitElement {
         ? html`<div class="wl-empty">${this.i18n.sofa}</div>`
         : this.state.page < this.state.totalPages
         ? html`<div class="wl-operation">
-            <button type="button" class="wl-btn" @click="${this.loadMore}">
+            <button
+              type="button"
+              class="wl-btn"
+              @click="${() => this.getCommentData(this.state.page + 1)}"
+            >
               ${this.i18n.more}
             </button>
           </div>`
@@ -234,7 +240,6 @@ export class WalineRoot extends LitElement {
   }
 
   getCommentData(pageNumber: number): void {
-    console.log("getCommentData", pageNumber);
     const {
       commentSorting,
       language,
@@ -260,7 +265,6 @@ export class WalineRoot extends LitElement {
       token: userInfo.token,
     })
       .then(({ count, data, totalPages }) => {
-        console.log(data);
         this.status = "success";
         this.state = {
           count,
@@ -277,10 +281,6 @@ export class WalineRoot extends LitElement {
       });
 
     this.abort = controller.abort.bind(controller);
-  }
-
-  loadMore() {
-    return this.getCommentData(this.state.page + 1);
   }
 
   refresh() {
