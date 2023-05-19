@@ -3,21 +3,24 @@ import {
   WalineCommentStatus,
   WalineRootComment,
 } from "@waline/api";
-import { LitElement, html, css } from "lit";
+import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { WalineRoot } from "./waline-comment.js";
-import { editIcon } from "./edit-icon.js";
-import { verifiedIcon } from "./verified-icon.js";
-import { isLinkHttp } from "../utils/path";
-import { getDate } from "../utils/date";
+
 import { deleteIcon } from "./delete-icon.js";
+import { editIcon } from "./edit-icon.js";
 import { likeIcon } from "./like-icon.js";
 import { replyIcon } from "./reply-icon.js";
+import { verifiedIcon } from "./verified-icon.js";
+
+import { type WalineRoot } from "./waline-comment.js";
 import { walineContent } from "./waline-content.js";
-import { normalizeStyle } from "../styles/normalize.js";
+
 import { baseStyle } from "../styles/base.js";
 import { cardStyle } from "../styles/card.js";
+import { normalizeStyle } from "../styles/normalize.js";
+
+import { getDate } from "../utils/date";
+import { isLinkHttp } from "../utils/path";
 
 const commentStatus: WalineCommentStatus[] = ["approved", "waiting", "spam"];
 
@@ -52,7 +55,7 @@ export class WalineCard extends LitElement {
    * Comment data
    */
   @property({ type: Object })
-  root: WalineRoot = null;
+  root: WalineRoot;
 
   constructor() {
     super();
@@ -86,11 +89,12 @@ export class WalineCard extends LitElement {
   }
 
   override render() {
-    console.log(this.root);
-    return html`<div id=${this.comment.objectId} class="wl-card-item">
+    const { comment } = this;
+
+    return html`<div id=${comment.objectId} class="wl-card-item">
       <div class="wl-user" aria-hidden="true">
-        ${this.comment.avatar
-          ? html`<img src=${this.comment.avatar} alt=${this.comment.nick} />`
+        ${comment.avatar
+          ? html`<img src=${comment.avatar} alt=${comment.nick} />`
           : ""}
         ${verifiedIcon}
       </div>
@@ -102,26 +106,26 @@ export class WalineCard extends LitElement {
                 :href="link"
                 target="_blank"
                 rel="nofollow noopener noreferrer"
-                >${this.comment.nick}</a
+                >${comment.nick}</a
               >`
-            : html`<span class="wl-nick">${this.comment.nick}</span>`}
-          ${this.comment.type === "administrator"
+            : html`<span class="wl-nick">${comment.nick}</span>`}
+          ${comment.type === "administrator"
             ? html`<span class="wl-badge">${this.root.i18n.admin}</span>`
             : ""}
-          ${this.comment.label
-            ? html`<span class="wl-badge">${this.comment.label}</span>`
+          ${comment.label
+            ? html`<span class="wl-badge">${comment.label}</span>`
             : ""}
-          ${(this.comment as WalineRootComment).sticky
+          ${(comment as WalineRootComment).sticky
             ? html`<span class="wl-badge">${this.root.i18n.sticky}</span>`
             : ""}
-          ${typeof this.comment["level"] === "number"
-            ? html`<span class="wl-badge level${this.comment.level}"
-                >${this.root.i18n[`level${this.comment.level}`] ||
-                `Level ${this.comment.level}`}</span
+          ${typeof comment["level"] === "number"
+            ? html`<span class="wl-badge level${comment.level}"
+                >${this.root.i18n[`level${comment.level}`] ||
+                `Level ${comment.level}`}</span
               >`
             : ""}
 
-          <span class="wl-time">${getDate(this.comment.insertedAt)}</span>
+          <span class="wl-time">${getDate(comment.insertedAt)}</span>
 
           <div class="wl-comment-actions">
             ${this.isAdmin || this.isOwner
@@ -149,8 +153,7 @@ export class WalineCard extends LitElement {
                 : this.root.i18n.like}"
               @click="${() => this.event("like")}"
             >
-              ${likeIcon(this.like)}
-              ${"like" in this.comment ? this.comment.like : ""}
+              ${likeIcon(this.like)} ${"like" in comment ? comment.like : ""}
             </button>
 
             <button
@@ -160,7 +163,7 @@ export class WalineCard extends LitElement {
                 ? this.root.i18n.cancelReply
                 : this.root.i18n.reply}"
               @click="${() =>
-                this.event("reply", this.isReplying ? null : this.comment)}"
+                this.event("reply", this.isReplying ? null : comment)}"
             >
               ${replyIcon}
             </button>
@@ -168,15 +171,15 @@ export class WalineCard extends LitElement {
         </div>
         <div class="wl-meta" aria-hidden="true">
           ${(["addr", "browser", "os"] as const).map((item) =>
-            this.comment[item]
-              ? html`<span class="wl-${item}" data-value="${this.comment[item]}"
-                  >${this.comment[item]}</span
+            comment[item]
+              ? html`<span class="wl-${item}" data-value="${comment[item]}"
+                  >${comment[item]}</span
                 >`
               : ""
           )}
         </div>
 
-        ${walineContent(this.comment.comment)}
+        ${walineContent(comment.comment)}
         ${this.isAdmin && !this.isEditing
           ? html`<div class="wl-admin-actions">
               <span class="wl-comment-status">
@@ -185,11 +188,11 @@ export class WalineCard extends LitElement {
                     html`<button
                       type="submit"
                       class="${`wl-btn wl-${status}`}"
-                      disabled="${this.comment.status === status}"
+                      disabled="${comment.status === status}"
                       @click="${() =>
                         this.event("status", {
+                          comment,
                           status,
-                          comment: this.comment,
                         })}"
                       v-text="locale[status]"
                     >
@@ -198,13 +201,13 @@ export class WalineCard extends LitElement {
                 )}
               </span>
 
-              ${this.isAdmin && !("rid" in this.comment)
+              ${this.isAdmin && !("rid" in comment)
                 ? html`<button
                     type="submit"
                     class="wl-btn wl-sticky"
                     @click="${() => this.event("sticky")}"
                   >
-                    ${this.comment.sticky
+                    ${comment.sticky
                       ? this.root.i18n.unsticky
                       : this.root.i18n.sticky}
                   </button>`
@@ -212,9 +215,9 @@ export class WalineCard extends LitElement {
             </div>`
           : ""}
         <!-- TODO: CommentBox -->
-        ${"children" in this.comment
+        ${"children" in comment
           ? html`<div class="wl-quote">
-              ${this.comment.children.map(
+              ${comment.children.map(
                 (child) => html`<CommentCard
                   comment="${child}"
                   :root-id="${this.rootId}"
