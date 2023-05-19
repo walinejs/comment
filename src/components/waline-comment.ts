@@ -3,18 +3,19 @@ import { customElement, property, state } from "lit/decorators.js";
 import { DEFAULT_LANG, DEFAULT_LOCALES } from "../config/index.js";
 import { type WalineCommentSorting } from "../typings/index.js";
 import {
-  UserInfo,
-  WalineComment,
-  WalineCommentStatus,
-  WalineRootComment,
+  type UserInfo,
+  type WalineComment,
+  type WalineCommentStatus,
+  type WalineRootComment,
   deleteComment,
   getComment,
   updateComment,
 } from "@waline/api";
-import { getServerURL } from "../utils/config.js";
+
 import { loadingIcon } from "./loading-icon.js";
-import { normalizeStyle } from "../styles/normalize.js";
 import { baseStyle } from "../styles/base.js";
+import { normalizeStyle } from "../styles/normalize.js";
+import { getServerURL } from "../utils/config.js";
 
 declare const VERSION: string;
 
