@@ -27,6 +27,7 @@
     "@web/test-runner-playwright": "0.10.0",
     "@web/test-runner-puppeteer": "0.13.1",
     "prettier": "^2.8.8",
+    "terser": "^5.17.4",
     "ts-lit-plugin": "1.2.1",
     "typescript": "5.0.4",
     "vite": "4.3.7"
