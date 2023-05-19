@@ -4,11 +4,15 @@ import {
   WalineRootComment,
 } from "@waline/api";
 import { LitElement, html, css } from "lit";
-import { customElement, property } from "lit/decorators";
-import { WalineRoot } from "./waline-comment";
+import { customElement, property } from "lit/decorators.js";
+import { WalineRoot } from "./waline-comment.js";
+import { editIcon } from "./edit-icon.js";
+import { verifiedIcon } from "./verified-icon.js";
 import { isLinkHttp } from "../utils/path";
-import { verifiedIcon } from "../utils/verifiedIcon";
 import { getDate } from "../utils/date";
+import { deleteIcon } from "./delete-icon.js";
+import { likeIcon } from "./like-icon.js";
+import { replyIcon } from "./reply-icon.js";
 
 const commentStatus: WalineCommentStatus[] = ["approved", "waiting", "spam"];
 
@@ -34,13 +38,20 @@ export class WalineCard extends LitElement {
   @property({ type: Object })
   edit: WalineComment | null = null;
 
+  /**
+   * Current comment to be replied
+   */
+  @property({ type: Object })
+  reply: WalineComment | null = null;
+  /**
+   * Comment data
+   */
+  @property({ type: Object })
+  root: WalineRoot = null;
+
   constructor() {
     super();
     this.comment ??= {} as WalineComment;
-  }
-
-  get root(): WalineRoot {
-    return this.getRootNode() as WalineRoot;
   }
 
   get link(): string {
@@ -61,13 +72,12 @@ export class WalineCard extends LitElement {
     return this.comment.user_id === this.root.userInfo.objectId;
   }
 
-  /**
-   * Current comment to be replied
-   */
-  @property({ type: Object })
-  reply: WalineComment | null = null;
+  get isReplying(): boolean {
+    return this.reply?.objectId === this.comment.objectId;
+  }
 
   override render() {
+    console.log(this.root);
     return html`<div id=${this.comment.objectId} class="wl-card-item">
       <div class="wl-user" aria-hidden="true">
         ${this.comment.avatar
@@ -107,43 +117,42 @@ export class WalineCard extends LitElement {
           <div class="wl-comment-actions">
             ${this.isAdmin || this.isOwner
               ? html`<button
-                  v-if=""
-                  type="button"
-                  class="wl-edit"
-                  @click="${this.editComment}"
-                >
-                  <EditIcon />
-                </button>`
+                    type="button"
+                    class="wl-edit"
+                    @click="${() => this.event("edit")}"
+                  >
+                    ${editIcon}
+                  </button>
+                  <button
+                    type="button"
+                    class="wl-delete"
+                    @click="${() => this.event("delete")}"
+                  >
+                    ${deleteIcon}
+                  </button> `
               : ""}
-
-            <button
-              v-if="isAdmin || isOwner"
-              type="button"
-              class="wl-delete"
-              @click="$emit('delete', comment)"
-            >
-              <DeleteIcon />
-            </button>
 
             <button
               type="button"
               class="wl-like"
-              :title="like ? locale.cancelLike : locale.like"
-              @click="$emit('like', comment)"
+              title="${this.like
+                ? this.root.i18n.cancelLike
+                : this.root.i18n.like}"
+              @click="${() => this.event("like")}"
             >
-              <LikeIcon :active="like" />
-
-              <span v-if="'like' in comment" v-text="comment.like" />
+              ${likeIcon(this.like)}
+              ${"like" in this.comment ? this.comment.like : ""}
             </button>
 
             <button
               type="button"
-              class="wl-reply"
-              :class="{ active: isReplyingCurrent }"
-              :title="isReplyingCurrent ? locale.cancelReply : locale.reply"
-              @click="$emit('reply', isReplyingCurrent ? null : comment)"
+              class="wl-reply ${this.isReplying ? "active" : ""}"
+              title="${this.isReplying
+                ? this.root.i18n.cancelReply
+                : this.root.i18n.reply}"
+              @click="${() => this.event("reply", !this.isReplying)}"
             >
-              <ReplyIcon />
+              ${replyIcon}
             </button>
           </div>
         </div>
@@ -151,9 +160,9 @@ export class WalineCard extends LitElement {
     </div>`;
   }
 
-  private editComment() {
+  private event(name: string, withDetail = true) {
     return this.dispatchEvent(
-      new CustomEvent("edit", { detail: this.comment })
+      new CustomEvent(name, { detail: withDetail ? this.comment : null })
     );
   }
 }

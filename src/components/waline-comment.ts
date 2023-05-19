@@ -12,7 +12,7 @@ import {
   updateComment,
 } from "@waline/api";
 import { getServerURL } from "../utils/config.js";
-import { loadingIcon } from "../utils/loading-icon.js";
+import { loadingIcon } from "./loading-icon.js";
 
 declare const VERSION: string;
 
@@ -175,7 +175,22 @@ export class WalineRoot extends LitElement {
           )}
         </ul>
       </div>
-      <div class="wl-cards"></div>
+      <div class="wl-cards">
+        ${this.state.data.map(
+          (comment) => html`<waline-card
+            .comment="${comment}"
+            .root-id="${comment.objectId}"
+            .reply="${this.reply}"
+            .edit="${this.edit}"
+            .root="${this}"
+            @reply="${this.onReply}"
+            @edit="${this.onEdit}"
+            @like="${this.onLike}"
+            @delete="${this.onDelete}"
+            @submit="${this.onSubmit}"
+          />`
+        )}
+      </div>
       ${this.status === "error"
         ? html`
             <div class="wl-operation">
