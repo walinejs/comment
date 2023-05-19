@@ -13,6 +13,8 @@ import {
 } from "@waline/api";
 import { getServerURL } from "../utils/config.js";
 import { loadingIcon } from "./loading-icon.js";
+import { normalizeStyle } from "../styles/normalize.js";
+import { baseStyle } from "../styles/base.js";
 
 declare const VERSION: string;
 
@@ -48,14 +50,7 @@ interface WalineCommentState {
  */
 @customElement("waline-comment")
 export class WalineRoot extends LitElement {
-  static override styles = css`
-    :host {
-      display: block;
-      border: solid 1px gray;
-      padding: 16px;
-      max-width: 800px;
-    }
-  `;
+  static override styles = [normalizeStyle, baseStyle];
 
   /**
    * Waline ServerURL

@@ -1,5 +1,6 @@
 import { resolve } from "node:path";
 import { defineConfig } from "vite";
+import { minifyTemplateLiterals } from "rollup-plugin-minify-template-literals";
 import pkg from "./package.json";
 
 export default defineConfig({
@@ -16,4 +17,5 @@ export default defineConfig({
   define: {
     VERSION: JSON.stringify(pkg.version),
   },
+  plugins: [minifyTemplateLiterals()],
 });
