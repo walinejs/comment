@@ -44,8 +44,12 @@ interface WalineCommentState {
 /**
  * An example element.
  *
- * @fires count-changed - Indicates when the count changes
- * @slot - This element has a slot
+ * @prop {string} server - Waline ServerURL
+ * @prop {string} identify - Waline Identify
+ * @prop {string} commentSorting - Waline Comment Sorting
+ * @prop {number} pageSize - Comment count per page
+ * @prop {string} language - Waline UI Language
+ * @prop {boolean} noCopyRight - Hide copyRight
  * @csspart button - The button
  */
 @customElement("waline-comment")
