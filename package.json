@@ -31,6 +31,6 @@
     "terser": "^5.17.4",
     "ts-lit-plugin": "1.2.1",
     "typescript": "5.0.4",
-    "vite": "4.3.7"
+    "vite": "4.3.9"
   }
 }
